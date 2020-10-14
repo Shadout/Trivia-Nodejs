@@ -1,7 +1,16 @@
+/*Multiple packages need to be installed using npm: 
+-npm i chalk
+-npm i node-fetch
+-npm i readline
+-npm i node-datetime
+-npm i figlet
+*/ 
+
 const fetch = require('node-fetch'); // I need the fetch require to be able to consume the trivia api.
 var cantidad = '10', categoria = '9', dificultad = 'medium'; // I declare and initialize the 3 variables that modify the url of the api and with it the game options.
 const readLine = require('readline'); //module that allows you to read the data input by console.
 const fs = require("fs"), NOMBRE_ARCHIVO = "scores"; //I need the require of fs to write and read the scores.
+var figlet = require('figlet'); // I use a module to get the text "you win" in the form of ascii when winning. 
 const scoresFile = 'scores'; // I declare and initialize scoresFile. The document to list the scores.
 let dateTime = require('node-datetime'); //I need the require datetime to be able to use the module that returns the current date.
 const chalk = require('chalk'); //I use the chalk module to color the data that comes out in the console.
@@ -36,7 +45,7 @@ function lanzarMenu(dificultad, categoria, cantidad) {
 
                     //I indicate to the player the question number in which he is.
                     console.log(chalk.magenta('Question ' + contadorPreguntas));
-                    console.log(chalk.gray('Difficulty: ' + dificultad), chalk.gray('Category: ' + categoria), chalk.gray('Amount: ' + cantidad));
+                    console.log(chalk.gray('Difficulty: ' + dificultad), chalk.gray('- Amount: ' + cantidad));
                     //I have to rewrite the promise because the above is for the default game and this is for option modifications.
                     promesa.then(res => res.clone().json()).then((data) => { //<-- I use clone because the normal fetch promise can only be used once.
                         console.log(chalk.greenBright("Category: " + data.results[0].category + "\n")); //I show the category by selecting the first position of the json data results array.
@@ -45,7 +54,7 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                         );
 
                         //to facilitate handling I put the answers in variables.
-                        let correcta = data.results[0].correct_answer //+' <-CORRECTA'; 
+                        let correcta = data.results[0].correct_answer +' <-CORRECTA'; 
                         let incorrecta1 = data.results[0].incorrect_answers[0];
                         let incorrecta2 = data.results[0].incorrect_answers[1];
                         let incorrecta3 = data.results[0].incorrect_answers[2];
@@ -143,8 +152,11 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                     break;
 
                 case '3':
+
+
                     pantallaOpciones();
                     function pantallaOpciones() {
+                        //The screenOptions function opens a switch with 3 options that work in the same way (category, difficulty and number of questions).
                         console.log(chalk.magenta('O P T I O N S'));
 
                         interfaz.question(chalk.red.italic('\nWrite your option.\n')
@@ -168,6 +180,7 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                                                 , function (selecDif) {
                                                     if (selecDif == 1) {
                                                         dificultad = 'easy';
+                                                        //The value cannot be returned in the traditional way from an asynchronous function in node, I invoke the function and enter the value as an attribute.
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
                                                     } else if (selecDif == 2) {
@@ -199,15 +212,15 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                                                 + chalk.red("3. 10  questions.\n")
                                                 , function (selecCant) {
                                                     if (selecCant == 1) {
-                                                        var cantidad = '3';
+                                                        cantidad = '3';
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
                                                     } else if (selecCant == 2) {
-                                                        var cantidad = '5';
+                                                        cantidad = '5';
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
                                                     } else if (selecCant == 3) {
-                                                        var cantidad = '10';
+                                                        cantidad = '10';
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
                                                     } else {
@@ -234,20 +247,20 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                                                 + chalk.red("3. Video games.\n")
                                                 , function (selecCateg) {
                                                     if (selecCateg == 1) {
-                                                        var categoria = '9';
+                                                        categoria = '9';
 
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
 
 
                                                     } else if (selecCateg == 2) {
-                                                        var categoria = '11';
+                                                        categoria = '11';
 
 
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
                                                     } else if (selecCateg == 3) {
-                                                        var categoria = '15';
+                                                        categoria = '15';
 
                                                         lanzarMenu(dificultad, categoria, cantidad);
 
@@ -297,18 +310,20 @@ function lanzarMenu(dificultad, categoria, cantidad) {
         });
 };
 
+// This launch question works the same as the previous fetch promise, but works for modified variables.
 function lanzarPregunta(dificultad, categoria, cantidad) {
-    contadorPreguntas++;
+    contadorPreguntas++; //<-- Each time a new question is launched, the question counter increases.
     console.log(chalk.magenta('QUESTION ' + contadorPreguntas));
-    console.log(chalk.gray('Difficulty: ' + dificultad), chalk.gray('Category: ' + categoria), chalk.gray('Amount: ' + cantidad));
-    var promesa = fetch('https://opentdb.com/api.php?amount=' + cantidad + '&category=' + categoria + '&difficulty=' + dificultad + '&type=multiple');
+
+
+    console.log(chalk.gray('Difficulty: ' + dificultad), chalk.gray('- Amount: ' + cantidad));    var promesa = fetch('https://opentdb.com/api.php?amount=' + cantidad + '&category=' + categoria + '&difficulty=' + dificultad + '&type=multiple');
 
     promesa.then(res => res.clone().json()).then((data) => {
         console.log(chalk.greenBright("Category: " + data.results[0].category + "\n"));
         console.log(chalk.yellowBright(data.results[0].question + "\n")
         );
 
-        let correcta = data.results[0].correct_answer//+' <-CORRECTA';
+        let correcta = data.results[0].correct_answer+' <-CORRECTA';
         let incorrecta1 = data.results[0].incorrect_answers[0];
         let incorrecta2 = data.results[0].incorrect_answers[1];
         let incorrecta3 = data.results[0].incorrect_answers[2];
@@ -335,16 +350,29 @@ function lanzarPregunta(dificultad, categoria, cantidad) {
                     var scoreDisplay = 'Score: ' + score + '%'
                     console.log(chalk.blue(scoreDisplay));
                     if (contadorPreguntas == cantidad) {
-                        var figlet = require('figlet');
+                         
 
                         figlet('YOU WIN', function (err, data) {
                             if (err) {
                                 console.log('error de texto...');
-                                console.dir(err);
-                                return;
+                                
                             }
                             console.log(data)
                         });
+
+                        console.log(chalk.redBright('YOU LOSE!\n'));
+                        if (fs.existsSync(scoresFile)) {
+                            let masPuntuaciones = '\n' + formatted + ' ' + score.toString() + '%';
+                            fs.appendFileSync(scoresFile, masPuntuaciones, (err) => {
+                            });
+                            console.log(chalk.greenBright('Score: ' + score + '%\n'));
+                            score = 0;
+                        } else {
+                            let puntuaciones = formatted + ' ' + score.toString() + '%';
+                            fs.writeFileSync(scoresFile, puntuaciones);
+                            console.log(chalk.greenBright('Score: ' + score + '%\n'));
+                            score = 0;
+                        }
                     } else {
                         lanzarPregunta(dificultad, categoria, cantidad);
                     }
