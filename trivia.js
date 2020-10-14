@@ -54,7 +54,7 @@ function lanzarMenu(dificultad, categoria, cantidad) {
                         );
 
                         //to facilitate handling I put the answers in variables.
-                        let correcta = data.results[0].correct_answer +' <-CORRECTA'; 
+                        let correcta = data.results[0].correct_answer // +' <-CORRECTA'; 
                         let incorrecta1 = data.results[0].incorrect_answers[0];
                         let incorrecta2 = data.results[0].incorrect_answers[1];
                         let incorrecta3 = data.results[0].incorrect_answers[2];
@@ -323,7 +323,7 @@ function lanzarPregunta(dificultad, categoria, cantidad) {
         console.log(chalk.yellowBright(data.results[0].question + "\n")
         );
 
-        let correcta = data.results[0].correct_answer+' <-CORRECTA';
+        let correcta = data.results[0].correct_answer //+' <-CORRECTA';
         let incorrecta1 = data.results[0].incorrect_answers[0];
         let incorrecta2 = data.results[0].incorrect_answers[1];
         let incorrecta3 = data.results[0].incorrect_answers[2];
