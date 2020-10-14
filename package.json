@@ -1,0 +1,23 @@
+{
+  "name": "Trivia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "trivia.js",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "express": "^4.17.1",
+    "figlet": "^1.5.0",
+    "node-datetime": "^2.1.2",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.4",
+    "shuffle-array": "^1.0.1",
+    "unique-random-array": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
